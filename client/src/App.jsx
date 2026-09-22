@@ -24,7 +24,7 @@ function App() {
       formData.append('resume', resumeFile); 
       formData.append('jobDescription', jobDescription); 
       const response = await fetch( 
-        'https://ai-resume-analyzer-api-2vqz.onrender.com/api/analyze', 
+        'https://ai-resume-analyzer-api-2vqz.onrender.com', 
         { 
           method: 'POST', 
           body: formData, 
