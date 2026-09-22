@@ -39,12 +39,25 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
       return res.status(400).json({ error: 'This PDF could not be read. Please upload a valid, non-corrupted PDF.' });
     }
 
-    const prompt = `...`; // unchanged
+    const prompt = `Compare the following resume to the job description below.
+
+    Resume:
+    ${resumeText}
+
+    Job Description:
+    ${jobDescription}
+
+    Return ONLY a valid JSON object (no markdown, no extra text) in this exact format:
+    {
+      "match_score": <number 0-100>,
+      "missing_keywords": [<array of important skills/keywords missing from the resume>],
+      "suggestions": [<array of 3-5 specific, actionable suggestions to improve the resume for this job>]
+    }`; // unchanged
 
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash', // verify this against your available models
+        model: 'gemini-2.5-flash', // verify this against your available models
         contents: prompt,
       });
     } catch (aiErr) {
