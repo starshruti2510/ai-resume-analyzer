@@ -1,0 +1,486 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080d1f;
+  min-height: 100vh;
+}
+
+/* Main App */
+.app {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 30px 30px;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #d8dbea;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Soft background glow */
+.app::before {
+  content: "";
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(190, 40, 170, 0.18),
+    transparent 70%
+  );
+  filter: blur(90px);
+  z-index: -1;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+  padding: 4px 0;
+  line-height: 1.4;
+
+  background: linear-gradient(
+    90deg,
+    #ff3cac,
+    #c85cff,
+    #8f5cff
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  display: inline-block;
+}
+
+.subtitle {
+  color: #a9aec7;
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: rgba(17, 24, 48, 0.92);
+
+  border: 1px solid rgba(180, 70, 255, 0.28);
+
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(170, 45, 220, 0.08);
+
+  backdrop-filter: blur(12px);
+}
+
+
+/* =========================
+   FIELDS
+========================= */
+
+.field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 6px;
+
+  font-weight: 600;
+  font-size: 0.8rem;
+
+  color: #ff63c3;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================
+   TEXTAREA
+========================= */
+
+textarea {
+  background: #151d35;
+
+  border: 1px solid rgba(170, 180, 220, 0.15);
+
+  border-radius: 10px;
+
+  padding: 10px;
+
+  color: #f5f2ff;
+
+  font-size: 13px;
+  font-family: inherit;
+
+  resize: vertical;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+textarea:focus {
+  outline: none;
+
+  border-color: #d34cff;
+
+  box-shadow:
+    0 0 0 2px rgba(211, 76, 255, 0.12);
+}
+
+textarea::placeholder {
+  color: #747b9a;
+}
+
+
+/* =========================
+   FILE UPLOAD
+========================= */
+
+.file-upload {
+  position: relative;
+
+  border: 2px dashed rgba(210, 100, 255, 0.25);
+
+  border-radius: 10px;
+
+  padding: 12px;
+
+  text-align: center;
+
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+
+  cursor: pointer;
+}
+
+.file-upload:hover {
+  border-color: #d84cff;
+
+  background: rgba(207, 55, 190, 0.06);
+}
+
+.file-upload input[type="file"] {
+  position: absolute;
+
+  inset: 0;
+
+  opacity: 0;
+
+  cursor: pointer;
+}
+
+.file-upload-label {
+  color: #c9cce0;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   ANALYZE BUTTON
+========================= */
+
+button[type="submit"] {
+  width: 100%;
+
+  padding: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  background: linear-gradient(
+    90deg,
+    #ff3cac,
+    #c23cff
+  );
+
+  color: #ffffff;
+
+  border: none;
+
+  border-radius: 10px;
+
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 25px rgba(255, 60, 172, 0.35);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   SPINNER
+========================= */
+
+.spinner {
+  display: inline-block;
+
+  width: 14px;
+  height: 14px;
+
+  border: 2px solid rgba(255, 255, 255, 0.3);
+
+  border-top-color: white;
+
+  border-radius: 50%;
+
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================
+   SCORE SECTION
+========================= */
+
+.score-section {
+  text-align: center;
+
+  margin-bottom: 20px;
+}
+
+
+/* SCORE RING */
+
+.score-circle {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 108px;
+  height: 108px;
+
+  border-radius: 50%;
+
+  background: conic-gradient(
+    from 0deg,
+    #ff3cac 0%,
+    #c23cff var(--score, 75%),
+    #242b46 var(--score, 75%),
+    #242b46 100%
+  );
+
+  box-shadow:
+    0 0 25px rgba(216, 55, 255, 0.18);
+}
+
+
+/* Inner circle creates DONUT effect */
+
+.score-circle::before {
+  content: "";
+
+  position: absolute;
+
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  background: #11182e;
+}
+
+
+/* Score number */
+
+.score-number {
+  position: relative;
+  z-index: 1;
+
+  font-size: 1.8rem;
+
+  font-weight: 800;
+
+  color: #ffffff;
+}
+
+
+/* /100 */
+
+.score-label {
+  position: relative;
+  z-index: 1;
+
+  font-size: 0.8rem;
+
+  color: #9298b5;
+
+  margin-left: 3px;
+}
+
+
+/* Match score text */
+
+.score-caption {
+  margin-top: 8px;
+
+  color: #9da3bd;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+.results h3 {
+  font-size: 0.8rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+  color: #ff55c2;
+
+  margin-bottom: 10px;
+
+  text-align: center;
+}
+
+
+/* =========================
+   KEYWORD TAGS
+========================= */
+
+.tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+
+  margin-bottom: 16px;
+}
+
+.tag {
+  background: rgba(205, 55, 190, 0.12);
+
+  color: #f06bc8;
+
+  border: 1px solid rgba(220, 65, 190, 0.4);
+
+  padding: 5px 12px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.tag:hover {
+  background: rgba(220, 65, 190, 0.2);
+
+  border-color: rgba(240, 80, 210, 0.65);
+}
+
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+.suggestions-list {
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+
+  max-height: 180px;
+
+  overflow-y: auto;
+}
+
+.suggestions-list li {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+
+  line-height: 1.4;
+
+  color: #c9cde0;
+
+  font-size: 13px;
+
+  background: rgba(31, 40, 70, 0.65);
+
+  padding: 10px 12px;
+
+  border-radius: 10px;
+}
+
+
+/* Checkmark */
+
+.bullet {
+  color: #ff55bd;
+
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
