@@ -44,7 +44,7 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash', // verify this against your available models
+        model: 'gemini-3.8-flash', // verify this against your available models
         contents: prompt,
       });
     } catch (aiErr) {
