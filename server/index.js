@@ -27,6 +27,13 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
 
     const resumeBuffer = req.file.buffer;
 
+    // --- debug logging ---
+    console.log('Original filename:', req.file.originalname);
+    console.log('Mimetype:', req.file.mimetype);
+    console.log('File size:', resumeBuffer.length);
+    console.log('First bytes:', resumeBuffer.slice(0, 10).toString());
+    // ----------------------
+
     let resumeText;
     try {
       const parsed = await pdfParse(resumeBuffer);
@@ -41,23 +48,23 @@ app.post('/api/analyze', upload.single('resume'), async (req, res) => {
 
     const prompt = `Compare the following resume to the job description below.
 
-    Resume:
-    ${resumeText}
+Resume:
+${resumeText}
 
-    Job Description:
-    ${jobDescription}
+Job Description:
+${jobDescription}
 
-    Return ONLY a valid JSON object (no markdown, no extra text) in this exact format:
-    {
-      "match_score": <number 0-100>,
-      "missing_keywords": [<array of important skills/keywords missing from the resume>],
-      "suggestions": [<array of 3-5 specific, actionable suggestions to improve the resume for this job>]
-    }`; // unchanged
+Return ONLY a valid JSON object (no markdown, no extra text) in this exact format:
+{
+  "match_score": <number 0-100>,
+  "missing_keywords": [<array of important skills/keywords missing from the resume>],
+  "suggestions": [<array of 3-5 specific, actionable suggestions to improve the resume for this job>]
+}`;
 
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash', // verify this against your available models
+        model: 'gemini-2.5-flash',
         contents: prompt,
       });
     } catch (aiErr) {
