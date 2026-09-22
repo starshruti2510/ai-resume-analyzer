@@ -64,7 +64,7 @@ Return ONLY a valid JSON object (no markdown, no extra text) in this exact forma
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-3.5-flash',
+        model: 'gemini-3.6-flash',
         contents: prompt,
       });
     } catch (aiErr) {
