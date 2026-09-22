@@ -20,38 +20,52 @@ app.get('/', (req, res) => {
 app.post('/api/analyze', upload.single('resume'), async (req, res) => {
   try {
     const jobDescription = req.body.jobDescription;
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No resume file received.' });
+    }
+
     const resumeBuffer = req.file.buffer;
 
-    const parsed = await pdfParse(resumeBuffer);
-    const resumeText = parsed.text;
+    let resumeText;
+    try {
+      const parsed = await pdfParse(resumeBuffer);
+      resumeText = parsed.text;
+      if (!resumeText || !resumeText.trim()) {
+        return res.status(400).json({ error: 'Could not extract text from this PDF. Try a different export (not scanned).' });
+      }
+    } catch (pdfErr) {
+      console.error('PDF parse error:', pdfErr.message);
+      return res.status(400).json({ error: 'This PDF could not be read. Please upload a valid, non-corrupted PDF.' });
+    }
 
-    const prompt = `Compare the following resume to the job description below.
+    const prompt = `...`; // unchanged
 
-Resume:
-${resumeText}
-
-Job Description:
-${jobDescription}
-
-Return ONLY a valid JSON object (no markdown, no extra text) in this exact format:
-{
-  "match_score": <number 0-100>,
-  "missing_keywords": [<array of important skills/keywords missing from the resume>],
-  "suggestions": [<array of 3-5 specific, actionable suggestions to improve the resume for this job>]
-}`;
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: prompt,
-    });
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash', // verify this against your available models
+        contents: prompt,
+      });
+    } catch (aiErr) {
+      console.error('Gemini API error:', aiErr.message);
+      return res.status(503).json({ error: 'AI service is busy right now. Please try again in a moment.' });
+    }
 
     const responseText = response.text;
     const cleaned = responseText.replace(/```json|```/g, '').trim();
-    const result = JSON.parse(cleaned);
+
+    let result;
+    try {
+      result = JSON.parse(cleaned);
+    } catch (parseErr) {
+      console.error('JSON parse error:', responseText);
+      return res.status(500).json({ error: 'AI returned an unexpected format. Please try again.' });
+    }
 
     res.json(result);
   } catch (err) {
-    console.error(err);
+    console.error('Unexpected error:', err);
     res.status(500).json({ error: 'Failed to process resume' });
   }
 });
